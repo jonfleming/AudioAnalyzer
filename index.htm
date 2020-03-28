@@ -12,13 +12,14 @@
   <script>
     var WIDTH = 300;
     var HEIGHT = 150;
-
+    var analyser;
+    
     //request microphone stream
     navigator.getUserMedia({ audio: true }, function (stream) {
       // Visualizations with Web Audio API  
       var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      var analyser = audioCtx.createAnalyser();
-      source = audioCtx.createMediaStreamSource(stream);
+      analyser = audioCtx.createAnalyser();
+      var source = audioCtx.createMediaStreamSource(stream);
       source.connect(analyser);
       analyser.connect(distortion);
       distortion.connect(audioCtx.destination);
@@ -32,7 +33,7 @@
       var c = document.getElementById("canvas");
       var canvasCtx = c.getContext("2d");
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
+      draw();
     }, function () { console.log('Error getting Microphone stream'); });
 
     function draw() {
@@ -61,8 +62,6 @@
       canvasCtx.lineTo(canvas.width, canvas.height / 2);
       canvasCtx.stroke();
     };
-
-    draw();
   </script>
   <canvas id="canvas" width="300" height="150">/<canvas>
 </body>
